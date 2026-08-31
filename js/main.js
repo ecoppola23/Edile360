@@ -1,22 +1,22 @@
 /**
- * EDILE 360 - MAIN INTERACTIVE JAVASCRIPT
- * Gestione interattiva di: Menu mobile, Calcolatore preventivi in tempo reale,
- * Filtri Portfolio, Accordion FAQ, Validazione form contatti e Notifiche.
+ * EDILE 360 - MAIN JAVASCRIPT (CLEAN & FAST)
+ * Gestione interattiva: Header, Mobile menu, Calcolatore preventivo,
+ * Filtri Portfolio, FAQ accordion e Form contatti.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- 1. STICKY HEADER & SCROLL BEHAVIOR ---
+  // --- 1. STICKY HEADER & BACK TO TOP ---
   const header = document.querySelector('.header');
   const scrollToTopBtn = document.querySelector('.scroll-to-top');
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
+    if (window.scrollY > 40) {
       header?.classList.add('scrolled');
     } else {
       header?.classList.remove('scrolled');
     }
 
-    if (window.scrollY > 400) {
+    if (window.scrollY > 350) {
       scrollToTopBtn?.classList.add('visible');
     } else {
       scrollToTopBtn?.classList.remove('visible');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 2. MOBILE MENU TOGGLE ---
+  // --- 2. MOBILE MENU ---
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navMenu = document.querySelector('.nav-menu');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close menu when clicking on a link
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 3. INTERACTIVE QUOTE CALCULATOR ---
+  // --- 3. INTERACTIVE QUOTE ESTIMATOR ---
   const calcRadios = document.querySelectorAll('input[name="calc-service"]');
   const calcMqSlider = document.getElementById('calc-mq');
   const mqValueDisplay = document.getElementById('mq-value');
@@ -71,60 +70,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const calcPriceDisplay = document.getElementById('calc-price-result');
   const calcApplyBtn = document.getElementById('calc-apply-btn');
 
-  // Prezzi base al mq orientativi per tipologia di lavoro
   const baseRates = {
-    'ristrutturazione-totale': 480,
-    'bagno-cucina': 650,
-    'cappotto-termico': 120,
-    'nuova-costruzione': 1300,
-    'tetto-facciata': 150
+    'ristrutturazione-totale': 450,
+    'bagno-cucina': 600,
+    'cappotto-termico': 115,
+    'nuova-costruzione': 1250,
+    'tetto-facciata': 140
   };
 
   function updateCalculation() {
-    // 1. Get selected service
     let selectedService = 'ristrutturazione-totale';
     calcRadios.forEach(radio => {
-      const card = radio.closest('.calc-radio-card');
+      const parentLabel = radio.closest('.calc-pill-label');
       if (radio.checked) {
         selectedService = radio.value;
-        card?.classList.add('selected');
+        parentLabel?.classList.add('selected');
       } else {
-        card?.classList.remove('selected');
+        parentLabel?.classList.remove('selected');
       }
     });
 
-    // 2. Get square meters
-    const mq = parseInt(calcMqSlider?.value || '80', 10);
+    const mq = parseInt(calcMqSlider?.value || '85', 10);
     if (mqValueDisplay) {
       mqValueDisplay.textContent = `${mq} m²`;
     }
 
-    // 3. Base cost calculation
-    const unitPrice = baseRates[selectedService] || 480;
+    const unitPrice = baseRates[selectedService] || 450;
     let totalBase = unitPrice * mq;
 
-    // 4. Extras
     let extraCost = 0;
     calcCheckboxes.forEach(cb => {
       if (cb.checked) {
-        const extraValue = parseInt(cb.dataset.cost || '0', 10);
-        extraCost += extraValue;
+        extraCost += parseInt(cb.dataset.cost || '0', 10);
       }
     });
 
     const finalMin = Math.round((totalBase + extraCost) * 0.9);
     const finalMax = Math.round((totalBase + extraCost) * 1.15);
 
-    // Format in EUR currency
     if (calcPriceDisplay) {
       calcPriceDisplay.textContent = `€ ${finalMin.toLocaleString('it-IT')} - € ${finalMax.toLocaleString('it-IT')}`;
     }
   }
 
-  // Bind calculator events
   calcRadios.forEach(radio => {
     radio.addEventListener('change', updateCalculation);
-    radio.closest('.calc-radio-card')?.addEventListener('click', () => {
+    radio.closest('.calc-pill-label')?.addEventListener('click', () => {
       radio.checked = true;
       updateCalculation();
     });
@@ -133,30 +124,26 @@ document.addEventListener('DOMContentLoaded', () => {
   calcMqSlider?.addEventListener('input', updateCalculation);
   calcCheckboxes.forEach(cb => cb.addEventListener('change', updateCalculation));
 
-  // Initialize calculation on load
+  // Initialize
   updateCalculation();
 
-  // "Usa questa stima per richiedere il preventivo"
   if (calcApplyBtn) {
     calcApplyBtn.addEventListener('click', () => {
       let selectedServiceName = 'Ristrutturazione Completa';
       const checkedRadio = document.querySelector('input[name="calc-service"]:checked');
       if (checkedRadio) {
-        const titleElem = checkedRadio.closest('.calc-radio-card')?.querySelector('.calc-radio-title');
-        if (titleElem) selectedServiceName = titleElem.textContent.trim();
+        selectedServiceName = checkedRadio.closest('.calc-pill-label')?.textContent.trim() || selectedServiceName;
       }
 
-      const mq = calcMqSlider?.value || '80';
+      const mq = calcMqSlider?.value || '85';
       const estimatedPrice = calcPriceDisplay?.textContent || '';
 
-      // Pre-compila il form contatti
       const serviceSelect = document.getElementById('contact-service');
       const messageField = document.getElementById('contact-message');
 
       if (serviceSelect) {
         for (let i = 0; i < serviceSelect.options.length; i++) {
-          if (serviceSelect.options[i].text.includes(selectedServiceName) || 
-              selectedServiceName.includes(serviceSelect.options[i].text)) {
+          if (serviceSelect.options[i].text.toLowerCase().includes(selectedServiceName.toLowerCase().slice(0, 5))) {
             serviceSelect.selectedIndex = i;
             break;
           }
@@ -164,29 +151,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (messageField) {
-        messageField.value = `Salve Edile 360, ho calcolato una stima online per "${selectedServiceName}" di circa ${mq} mq (fascia stimata: ${estimatedPrice}). Vorrei fissare un sopralluogo gratuito per confermare il preventivo dettagliato.`;
+        messageField.value = `Salve Edile 360, ho calcolato una stima orientativa online per "${selectedServiceName}" di circa ${mq} mq (${estimatedPrice}). Vorrei concordare un sopralluogo gratuito per confermare il preventivo.`;
       }
 
-      // Smooth scroll to contact section
       const contactSection = document.getElementById('contatti');
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth' });
-        // Highlight message area
         messageField?.focus();
       }
     });
   }
 
-  // --- 4. PORTFOLIO FILTERING ---
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const portfolioItems = document.querySelectorAll('.portfolio-card');
+  // --- 4. PORTFOLIO FILTER ---
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const portfolioItems = document.querySelectorAll('.portfolio-item-card');
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
 
-      const filter = btn.dataset.filter;
+      const filter = chip.dataset.filter;
 
       portfolioItems.forEach(item => {
         if (filter === 'all' || item.dataset.category === filter) {
@@ -194,39 +179,35 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => {
             item.style.opacity = '1';
             item.style.transform = 'scale(1)';
-          }, 50);
+          }, 30);
         } else {
           item.style.opacity = '0';
           item.style.transform = 'scale(0.95)';
           setTimeout(() => {
             item.style.display = 'none';
-          }, 300);
+          }, 250);
         }
       });
     });
   });
 
   // --- 5. FAQ ACCORDION ---
-  const faqItems = document.querySelectorAll('.faq-item');
+  const faqCards = document.querySelectorAll('.faq-card');
 
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faq-question');
-    question?.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
+  faqCards.forEach(card => {
+    const headerElem = card.querySelector('.faq-header');
+    headerElem?.addEventListener('click', () => {
+      const isActive = card.classList.contains('active');
 
-      // Close all other items
-      faqItems.forEach(otherItem => {
-        otherItem.classList.remove('active');
-      });
+      faqCards.forEach(c => c.classList.remove('active'));
 
-      // Toggle current item
       if (!isActive) {
-        item.classList.add('active');
+        card.classList.add('active');
       }
     });
   });
 
-  // --- 6. CONTACT FORM SUBMISSION & TOAST NOTIFICATION ---
+  // --- 6. CONTACT FORM & TOAST ---
   const contactForm = document.getElementById('main-contact-form');
   const toast = document.getElementById('toast-notification');
 
@@ -249,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toast.classList.add('show');
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 5000);
+    }, 4500);
   }
 
   if (contactForm) {
@@ -262,16 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const privacy = document.getElementById('contact-privacy')?.checked;
 
       if (!name || !phone || !email) {
-        showToast('Compila tutti i campi obbligatori per inviare la richiesta.', false);
+        showToast('Compila tutti i campi obbligatori.', false);
         return;
       }
 
       if (!privacy) {
-        showToast('È necessario accettare il trattamento dei dati personali.', false);
+        showToast('Accetta il trattamento della privacy.', false);
         return;
       }
 
-      // Simulate sending with loading state
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
@@ -285,14 +265,14 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.innerHTML = originalText;
         }
 
-        showToast('Richiesta inviata con successo! Un nostro responsabile ti contatterà entro 24 ore.');
+        showToast('Richiesta inviata con successo! Ti risponderemo in poche ore.');
         contactForm.reset();
         updateCalculation();
-      }, 1200);
+      }, 1000);
     });
   }
 
-  // --- 7. SMOOTH ANCHOR NAVIGATION ---
+  // --- 7. SMOOTH ANCHORS ---
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
