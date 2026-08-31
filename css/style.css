@@ -1,5 +1,5 @@
 /* ==========================================================================
-   EDILE 360 - MODERN, FRESH & SLEEK STYLESHEET
+   EDILE 360 - MODERN, FRESH & SLEEK RESPONSIVE STYLESHEET
    ========================================================================== */
 
 /* --- CSS VARIABLES & THEME --- */
@@ -53,6 +53,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -381,6 +382,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.4rem;
   color: var(--secondary);
   cursor: pointer;
+  padding: 6px;
 }
 
 /* ==========================================================================
@@ -454,7 +456,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-pills {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -520,6 +522,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .floating-text strong {
@@ -720,11 +723,6 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-md);
 }
 
-.calc-header-badge {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
 .calc-options-pills {
   display: flex;
   gap: 10px;
@@ -804,8 +802,8 @@ h1, h2, h3, h4, h5, h6 {
 .range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--primary);
   cursor: pointer;
@@ -1506,15 +1504,33 @@ textarea.form-input-clean {
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: 60px 0;
+    padding: 55px 0;
   }
 
   .section-title {
     font-size: 1.85rem;
   }
 
+  .hero {
+    padding: 50px 0 60px;
+  }
+
   .hero-title {
-    font-size: 2.35rem;
+    font-size: 2.25rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
   }
 
   .mobile-toggle {
@@ -1531,9 +1547,10 @@ textarea.form-input-clean {
     flex-direction: column;
     align-items: flex-start;
     padding: 24px;
-    gap: 16px;
+    gap: 14px;
     box-shadow: var(--shadow-lg);
     transition: left var(--transition-normal);
+    overflow-y: auto;
   }
 
   .nav-menu.active {
@@ -1541,9 +1558,9 @@ textarea.form-input-clean {
   }
 
   .nav-link {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     width: 100%;
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid var(--border-light);
   }
 
@@ -1551,12 +1568,34 @@ textarea.form-input-clean {
     display: none;
   }
 
+  .about-features-grid {
+    grid-template-columns: 1fr;
+  }
+
   .services-grid {
     grid-template-columns: 1fr;
   }
 
+  .calc-fresh-container {
+    padding: 22px 18px;
+  }
+
+  .calc-estimate-result-box {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .calc-estimate-result-box .btn {
+    width: 100%;
+  }
+
   .contact-layout-fresh {
     grid-template-columns: 1fr;
+  }
+
+  .contact-form-fresh {
+    padding: 24px 18px;
   }
 
   .form-row-2 {
@@ -1570,19 +1609,32 @@ textarea.form-input-clean {
   .portfolio-grid-fresh {
     grid-template-columns: 1fr;
   }
+
+  .process-steps-row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer-nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2rem;
-  }
-
-  .about-features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .process-steps-row {
-    grid-template-columns: 1fr;
+    font-size: 1.95rem;
   }
 
   .hero-floating-card {
@@ -1590,7 +1642,20 @@ textarea.form-input-clean {
     margin-top: 14px;
   }
 
-  .calc-fresh-container {
-    padding: 20px 16px;
+  .calc-options-pills {
+    flex-direction: column;
+  }
+
+  .calc-pill-label {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .calc-extras-bar {
+    flex-direction: column;
+  }
+
+  .calc-extra-chip {
+    width: 100%;
   }
 }
