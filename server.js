@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const PORT = 8080;
 
@@ -14,6 +15,18 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon'
 };
+
+function getLocalIp() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal && !iface.address.startsWith('172.')) {
+        return iface.address;
+      }
+    }
+  }
+  return '192.168.1.19';
+}
 
 const server = http.createServer((req, res) => {
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url.split('?')[0]);
@@ -37,9 +50,10 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
+  const localIp = getLocalIp();
   console.log(`\n======================================================`);
   console.log(`🚀 Server Locale Edile 360 Attivo!`);
   console.log(`💻 Sul tuo PC:         http://localhost:${PORT}`);
-  console.log(`📱 Per il tuo amico:   http://<TUO-IP-LOCALE>:${PORT}`);
+  console.log(`📱 Dal tuo telefono:   http://${localIp}:${PORT}`);
   console.log(`======================================================\n`);
 });
