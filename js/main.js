@@ -71,11 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const calcApplyBtn = document.getElementById('calc-apply-btn');
 
   const baseRates = {
-    'ristrutturazione-totale': 450,
-    'bagno-cucina': 600,
-    'cappotto-termico': 115,
-    'nuova-costruzione': 1250,
-    'tetto-facciata': 140
+    'ristrutturazione-totale': 1000, // ~1.000 €/mq per ristrutturazione completa chiavi in mano
+    'bagno-cucina': 850,
+    'cappotto-termico': 130,
+    'nuova-costruzione': 1600,
+    'tetto-facciata': 180
   };
 
   function updateCalculation() {
