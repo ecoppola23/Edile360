@@ -1,11 +1,10 @@
 /**
- * EDILE 360 - MAIN JAVASCRIPT (CLEAN & FAST)
- * Gestione interattiva: Header, Mobile menu, Calcolatore preventivo,
- * Filtri Portfolio, FAQ accordion e Form contatti.
+ * EDILE 360 - JAVASCRIPT PRINCIPALE
+ * Gestione interattiva: Header, Menu Mobile, Calcolatore preventivi e Form contatti.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- 1. STICKY HEADER & BACK TO TOP ---
+  // --- 1. HEADER STICKY & TORNA IN CIMA ---
   const header = document.querySelector('.header');
   const scrollToTopBtn = document.querySelector('.scroll-to-top');
 
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 2. MOBILE MENU ---
+  // --- 2. MENU MOBILE ---
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navMenu = document.querySelector('.nav-menu');
   const navLinks = document.querySelectorAll('.nav-link');
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 3. INTERACTIVE QUOTE ESTIMATOR ---
+  // --- 3. CALCOLATORE PREVENTIVI RAPIDO ---
   const calcRadios = document.querySelectorAll('input[name="calc-service"]');
   const calcMqSlider = document.getElementById('calc-mq');
   const mqValueDisplay = document.getElementById('mq-value');
@@ -70,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const calcPriceDisplay = document.getElementById('calc-price-result');
   const calcApplyBtn = document.getElementById('calc-apply-btn');
 
+  // Tariffe base di mercato realistiche al mq
   const baseRates = {
     'ristrutturazione-totale': 1000, // ~1.000 €/mq per ristrutturazione completa chiavi in mano
     'bagno-cucina': 850,
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mqValueDisplay.textContent = `${mq} m²`;
     }
 
-    const unitPrice = baseRates[selectedService] || 450;
+    const unitPrice = baseRates[selectedService] || 1000;
     let totalBase = unitPrice * mq;
 
     let extraCost = 0;
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   calcMqSlider?.addEventListener('input', updateCalculation);
   calcCheckboxes.forEach(cb => cb.addEventListener('change', updateCalculation));
 
-  // Initialize
+  // Inizializza al caricamento
   updateCalculation();
 
   if (calcApplyBtn) {
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (messageField) {
-        messageField.value = `Salve Edile 360, ho calcolato una stima orientativa online per "${selectedServiceName}" di circa ${mq} mq (${estimatedPrice}). Vorrei concordare un sopralluogo gratuito per confermare il preventivo.`;
+        messageField.value = `Salve Edile 360, ho calcolato una stima preliminare online per "${selectedServiceName}" di circa ${mq} mq (${estimatedPrice}). Vorrei fissare un sopralluogo gratuito per visionare i lavori e definire il preventivo.`;
       }
 
       const contactSection = document.getElementById('contatti');
@@ -162,52 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- 4. PORTFOLIO FILTER ---
-  const filterChips = document.querySelectorAll('.filter-chip');
-  const portfolioItems = document.querySelectorAll('.portfolio-item-card');
-
-  filterChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      filterChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      const filter = chip.dataset.filter;
-
-      portfolioItems.forEach(item => {
-        if (filter === 'all' || item.dataset.category === filter) {
-          item.style.display = 'block';
-          setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'scale(1)';
-          }, 30);
-        } else {
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.95)';
-          setTimeout(() => {
-            item.style.display = 'none';
-          }, 250);
-        }
-      });
-    });
-  });
-
-  // --- 5. FAQ ACCORDION ---
-  const faqCards = document.querySelectorAll('.faq-card');
-
-  faqCards.forEach(card => {
-    const headerElem = card.querySelector('.faq-header');
-    headerElem?.addEventListener('click', () => {
-      const isActive = card.classList.contains('active');
-
-      faqCards.forEach(c => c.classList.remove('active'));
-
-      if (!isActive) {
-        card.classList.add('active');
-      }
-    });
-  });
-
-  // --- 6. CONTACT FORM & TOAST ---
+  // --- 4. FORM CONTATTI & FEEDBACK TOAST ---
   const contactForm = document.getElementById('main-contact-form');
   const toast = document.getElementById('toast-notification');
 
@@ -220,10 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toastIcon) {
       if (isSuccess) {
         toastIcon.className = 'fa-solid fa-circle-check toast-icon';
-        toast.style.borderLeftColor = 'var(--accent-green)';
+        toast.style.borderLeftColor = '#16a34a';
       } else {
         toastIcon.className = 'fa-solid fa-circle-exclamation toast-icon';
-        toast.style.borderLeftColor = '#ef4444';
+        toast.style.borderLeftColor = '#dc2626';
       }
     }
 
@@ -248,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (!privacy) {
-        showToast('Accetta il trattamento della privacy.', false);
+        showToast('È necessario accettare l\'informativa sulla privacy per procedere.', false);
         return;
       }
 
@@ -265,14 +220,14 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.innerHTML = originalText;
         }
 
-        showToast('Richiesta inviata con successo! Ti risponderemo in poche ore.');
+        showToast('Richiesta inviata con successo! Un nostro responsabile ti contatterà al più presto.');
         contactForm.reset();
         updateCalculation();
       }, 1000);
     });
   }
 
-  // --- 7. SMOOTH ANCHORS ---
+  // --- 5. SMOOTH SCROLL ANCHOR ---
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
