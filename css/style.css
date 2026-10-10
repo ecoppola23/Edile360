@@ -1080,6 +1080,52 @@ textarea.form-input-clean {
   font-size: 0.78rem;
   flex-wrap: wrap;
   gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dati Legali Società */
+.footer-legal-row {
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 14px;
+}
+
+.footer-legal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.footer-legal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.footer-legal-item i {
+  color: #c25e00;
+  font-size: 0.85rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.footer-legal-item strong {
+  color: #cbd5e1;
+}
+
+.footer-privacy-link {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+
+.footer-privacy-link:hover {
+  color: #ffffff;
 }
 
 /* ==========================================================================
@@ -1305,6 +1351,10 @@ textarea.form-input-clean {
   .footer-nav-links {
     flex-direction: column;
     gap: 10px;
+  }
+
+  .footer-legal-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .footer-bottom-row {
