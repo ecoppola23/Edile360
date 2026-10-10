@@ -11,13 +11,14 @@
 
   --secondary: #1e293b; /* Antracite / Grafite profondo */
   --secondary-light: #334155;
-  --secondary-subtle: #f8fafc;
+  --secondary-subtle: #f3ecdb; /* Tono sabbia caldo per badge e dettagli */
 
-  --bg-page: #f9fafb; /* Fondo grigio chiaro architettonico caldo */
-  --bg-card: #ffffff;
+  --bg-page: #fbf8ef; /* Fondo crema / avorio caldo con leggero tono dorato/giallo */
+  --bg-page-warm: #f3ecdb; /* Tono sabbia caldo delicato per alternanza sezioni */
+  --bg-card: #ffffff; /* Card bianche per massimo contrasto e pulizia */
 
-  --border-light: #e5e7eb;
-  --border-medium: #d1d5db;
+  --border-light: #e6ddce; /* Bordi caldi in tinta naturale pietra */
+  --border-medium: #d7ccba;
 
   --text-main: #0f172a;
   --text-body: #475569;
@@ -249,10 +250,10 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
-  background: #ffffff;
+  background: var(--bg-page);
   border-bottom: 1px solid var(--border-light);
   z-index: 1000;
-  transition: box-shadow var(--transition-fast);
+  transition: box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .header.scrolled {
@@ -354,7 +355,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero {
   position: relative;
   padding: 70px 0 65px;
-  background-color: #ffffff;
+  background: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-page-warm) 100%);
   border-bottom: 1px solid var(--border-light);
 }
 
@@ -495,7 +496,7 @@ h1, h2, h3, h4, h5, h6 {
    CHI SIAMO
    ========================================================================== */
 .about {
-  background-color: var(--bg-page);
+  background-color: var(--bg-page-warm);
 }
 
 .about-features-grid {
@@ -546,7 +547,7 @@ h1, h2, h3, h4, h5, h6 {
    SERVICES
    ========================================================================== */
 .services {
-  background-color: #ffffff;
+  background-color: var(--bg-page);
   border-top: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
 }
@@ -656,7 +657,7 @@ h1, h2, h3, h4, h5, h6 {
    CALCULATOR
    ========================================================================== */
 .calculator-section {
-  background-color: var(--bg-page);
+  background-color: var(--bg-page-warm);
 }
 
 .calc-fresh-container {
@@ -830,7 +831,7 @@ h1, h2, h3, h4, h5, h6 {
    COME LAVORIAMO (STEP PROGRESSIVI)
    ========================================================================== */
 .process-compact {
-  background: #ffffff;
+  background: var(--bg-page);
   border-top: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
 }
@@ -842,10 +843,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .step-card {
-  background: var(--bg-page);
+  background: #ffffff;
   padding: 22px 18px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--transition-fast);
 }
 
@@ -882,7 +884,7 @@ h1, h2, h3, h4, h5, h6 {
    CONTATTI
    ========================================================================== */
 .contact-section {
-  background-color: var(--bg-page);
+  background-color: var(--bg-page-warm);
 }
 
 .contact-layout-fresh {
@@ -1231,7 +1233,7 @@ textarea.form-input-clean {
     left: -100%;
     width: 100%;
     height: calc(100vh - 65px);
-    background: #ffffff;
+    background: var(--bg-page);
     flex-direction: column;
     align-items: flex-start;
     padding: 24px;
