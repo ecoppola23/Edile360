@@ -207,6 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const service = document.getElementById('contact-service')?.value || 'Non specificato';
+      const message = document.getElementById('contact-message')?.value.trim() || 'Nessun messaggio aggiuntivo';
+
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
@@ -214,16 +217,46 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...';
       }
 
-      setTimeout(() => {
+      fetch("https://formsubmit.co/ajax/ecoppola23@gmail.com", {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "Nome e Cognome": name,
+          "Telefono": phone,
+          "Email": email,
+          "Tipo di Lavoro": service,
+          "Dettagli Lavoro": message,
+          "_subject": `Nuova Richiesta Preventivo Edile 360 - ${name}`,
+          "_template": "table"
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Errore di rete');
+        }
+        return response.json();
+      })
+      .then(data => {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
         }
 
-        showToast('Richiesta inviata con successo! Un nostro responsabile ti contatterà al più presto.');
+        showToast('Richiesta inviata con successo! Ti contatteremo al più presto.');
         contactForm.reset();
         updateCalculation();
-      }, 1000);
+      })
+      .catch(error => {
+        console.error('Errore invio form:', error);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+        showToast('Errore durante l\'invio. Chiamaci direttamente o contattaci su WhatsApp.', false);
+      });
     });
   }
 
