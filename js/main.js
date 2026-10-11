@@ -217,9 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...';
       }
 
-      fetch("https://formsubmit.co/ajax/ecoppola23@gmail.com", {
+      fetch("https://formsubmit.co/ajax/ info@edile360srl.it", {
         method: "POST",
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -233,30 +233,30 @@ document.addEventListener('DOMContentLoaded', () => {
           "_template": "table"
         })
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Errore di rete');
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        }
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Errore di rete');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          }
 
-        showToast('Richiesta inviata con successo! Ti contatteremo al più presto.');
-        contactForm.reset();
-        updateCalculation();
-      })
-      .catch(error => {
-        console.error('Errore invio form:', error);
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        }
-        showToast('Errore durante l\'invio. Chiamaci direttamente o contattaci su WhatsApp.', false);
-      });
+          showToast('Richiesta inviata con successo! Ti contatteremo al più presto.');
+          contactForm.reset();
+          updateCalculation();
+        })
+        .catch(error => {
+          console.error('Errore invio form:', error);
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          }
+          showToast('Errore durante l\'invio. Chiamaci direttamente o contattaci su WhatsApp.', false);
+        });
     });
   }
 
